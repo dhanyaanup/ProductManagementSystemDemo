@@ -132,3 +132,4 @@
 /mnt/c/DevDemo/ProductManagementSystem/ProductManagementSystem/obj/Debug/net8.0/ProductManagementSystem.pdb
 /mnt/c/DevDemo/ProductManagementSystem/ProductManagementSystem/obj/Debug/net8.0/ProductManagementSystem.genruntimeconfig.cache
 /mnt/c/DevDemo/ProductManagementSystem/ProductManagementSystem/obj/Debug/net8.0/ref/ProductManagementSystem.dll
+/mnt/c/DevDemo/ProductManagementSystem/ProductManagementSystem/obj/Debug/net8.0/ProductManagementSystem.sourcelink.json

@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Deploy to EC2
 
 on:
   push:
@@ -6,19 +6,43 @@ on:
       - main
 
 jobs:
-  docker:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-      - uses: docker/login-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - uses: docker/build-push-action@v6
+      - name: Build Docker Image
+        run: |
+          docker build -t dhanya353/productmanagementsystem:latest .
+
+      - name: Push Docker Image
+        run: |
+          docker push dhanya353/productmanagementsystem:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
         with:
-          context: .
-          push: true
-          tags: dhanya353/dhanya353/productmanagementsystem:latest
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo docker pull dhanya353/productmanagementsystem:latest
+
+            sudo docker stop product-container || true
+            sudo docker rm product-container || true
+
+            sudo docker run -d \
+              --name product-container \
+              --restart always \
+              -p 5000:8080 \
+              dhanya353/productmanagementsystem:latest
+
+            sudo systemctl restart nginx

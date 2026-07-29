@@ -21,4 +21,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: dhanya353/employapp:latest
+          tags: dhanya353/dhanya353/productmanagementsystem:latest
